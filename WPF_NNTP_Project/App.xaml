@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:WPF_NNTP_Project"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="ContentControl" x:Key="base">
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        
+        <Style TargetType="Label" BasedOn="{StaticResource base}"/>
     </Application.Resources>
 </Application>
