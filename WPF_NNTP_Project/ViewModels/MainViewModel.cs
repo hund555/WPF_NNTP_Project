@@ -38,30 +38,23 @@ namespace WPF_NNTP_Project.ViewModels
 
             if (response == null || !response.Contains("200"))
             {
-                MessageBox.Show("Failed to connect to NNTP server.");
                 throw new Exception("Connection failed");
             }
-            MessageBox.Show(response);
-
 
 
             response = await _nntpConnection.SendCommandAsync($"authinfo user {profile.Email}");
             if (response == null || !response.Contains("381"))
             {
-                MessageBox.Show("Username not accepted.");
                 throw new Exception("Username not accepted");
             }
-            MessageBox.Show(response);
 
 
 
             response = await _nntpConnection.SendCommandAsync($"authinfo pass {profile.Password}");
             if (response == null || !response.Contains("281"))
             {
-                MessageBox.Show("Wrong password.\nAuthentication failed.");
                 throw new Exception("Authentication failed");
             }
-            MessageBox.Show(response);
             return response;
         }
 

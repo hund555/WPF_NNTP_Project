@@ -33,6 +33,7 @@ namespace WPF_NNTP_Project.Views
             try
             {
                 await _viewModel.GetGroups();
+                selectButton.Content = "Select group";
             }
             catch (Exception ex)
             {
@@ -54,16 +55,24 @@ namespace WPF_NNTP_Project.Views
 
         private async void SelectGroupAsync(object sender, RoutedEventArgs e)
         {
-            await _viewModel.SelectGroup(groupBox.Text);
             try
             {
-                
+                if (int.TryParse(groupBox.Text, out int id))
+                {
+                    await _viewModel.SelectArticle(groupBox.Text);
+                }
+                else
+                {
+                    string response = await _viewModel.SelectGroup(groupBox.Text);
+                    ((Button)sender).Content = "Select article";
+                }
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
 
         private void nntpListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -39,6 +39,7 @@ namespace WPF_NNTP_Project
             try
             {
                 string response = await _viewModel.ConnectToNNTPAsync(NntpServer, port, new Profile() { Email = email.Text, Password = password.Password });
+                MessageBox.Show(response);
                 if (response.Contains("281"))
                 {
                     CommandView commandView = new CommandView();

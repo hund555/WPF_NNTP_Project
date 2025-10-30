@@ -15,6 +15,7 @@ namespace WPF_NNTP_Project.ViewModels
         private NNTPConnection _nntpConnection;
         private List<string> groups = new List<string>();
         private ObservableCollection<string> output;
+
 		public ObservableCollection<string> Output
         {
 			get { return output; }
@@ -70,7 +71,7 @@ namespace WPF_NNTP_Project.ViewModels
             }
         }
 
-        public async Task SelectGroup(string groupName)
+        public async Task<string> SelectGroup(string groupName)
         {
             string? response = await _nntpConnection.SendCommandAsync($"group {groupName}");
             if (response == null || !response.Contains("211"))
@@ -95,7 +96,26 @@ namespace WPF_NNTP_Project.ViewModels
             }
 
             output.Add(response);
+            return response;
+        }
 
+        public async Task SelectArticle(string articleId)
+        {
+            string? response = await _nntpConnection.SendCommandAsync($"article {articleId}");
+
+            if (response == null || !response.Contains("220"))
+            {
+                throw new Exception("Failed to select article");
+            }
+            output.Clear();
+            output.Add(response);
+            while (true)
+            {
+                string? line = await _nntpConnection.Reader.ReadLineAsync();
+                if (line == null || line == ".")
+                    break;
+                output.Add(line);
+            }
         }
     }
 }

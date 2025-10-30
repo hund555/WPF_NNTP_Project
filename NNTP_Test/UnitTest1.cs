@@ -49,5 +49,48 @@ namespace NNTP_Test
 
             Assert.True(commandViewModel.Output.Count > 0, "Output should contain groups after GetGroups is called.");
         }
-    }
+
+        [Fact]
+        public async void TestSelectGroup()
+        {
+            // arrange
+            var mainViewModel = new MainViewModel();
+            await mainViewModel.ConnectToNNTPAsync("news.sunsite.dk", 119, new Profile()
+            {
+                Email = "allive01@easv365.dk",
+                Password = "694045"
+            });
+
+            var commandViewModel = new CommandViewModel();
+            await commandViewModel.GetGroups();
+
+            // act
+            await commandViewModel.SelectGroup("dk.test");
+
+            // assert
+            Assert.True(commandViewModel.Output.Count > 100, "Output should contain articles after SelectGroup is called.");
+        }
+
+        [Fact]
+        public async void TestSelectArticle()
+        {
+            // arrange
+            var mainViewModel = new MainViewModel();
+            await mainViewModel.ConnectToNNTPAsync("news.sunsite.dk", 119, new Profile()
+            {
+                Email = "allive01@easv365.dk",
+                Password = "694045"
+            });
+
+            var commandViewModel = new CommandViewModel();
+            await commandViewModel.SelectGroup("dk.test");
+            await Task.Delay(500); // Give some time to fetch articles
+
+            // act
+            await commandViewModel.SelectArticle("150702");
+
+            // assert
+            Assert.True(commandViewModel.Output.Count > 5, "Output should contain data from article after SelectArtical is called.");
+        }
+    } 
 }
