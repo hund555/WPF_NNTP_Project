@@ -1,8 +1,17 @@
-﻿namespace WPF_NNTP_Project.Models
+﻿using WPF_NNTP_Project.ViewModels;
+
+namespace WPF_NNTP_Project.Models
 {
-    public class Profile
+    public class Profile : ViewModelBase
     {
-        public string Name { get; set; }
+        private string name;
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
         public string Email { get; set; }
         public string Password { get; set; }
 

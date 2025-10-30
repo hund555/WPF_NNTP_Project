@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPF_NNTP_Project.Models;
+using WPF_NNTP_Project.ViewModels;
+using WPF_NNTP_Project.Views;
 
 namespace WPF_NNTP_Project
 {
@@ -20,60 +22,34 @@ namespace WPF_NNTP_Project
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly MainViewModel _viewModel;
         const string NntpServer = "news.sunsite.dk";
         const int port = 119;
-        List<Profile> profiles = new List<Profile>();
         public MainWindow()
         {
+            DataContext = _viewModel = new MainViewModel();
             InitializeComponent();
-            profiles.Add(new Profile("Name=Select Profile"));
-            foreach (string profileLine in File.ReadAllLines("../../../Files/profiles.txt"))
-            {
-                profiles.Add(new Profile(profileLine));
-            }
-            CBProfile.ItemsSource = profiles;
+            CBProfile.ItemsSource = _viewModel.Profiles;
             CBProfile.SelectedIndex = 0;
             CBProfile.DisplayMemberPath = "Name";
         }
 
         private async void Button_ClickAsync(object sender, RoutedEventArgs e)
         {
-            TcpClient client = new TcpClient();
-            await client.ConnectAsync(NntpServer, port);
-
-            NetworkStream stream = client.GetStream();
-            StreamReader reader = new StreamReader(stream, Encoding.ASCII);
-            StreamWriter writer = new StreamWriter(stream, Encoding.ASCII) { NewLine = "\r\n", AutoFlush = true };
-
-            string? response = await reader.ReadLineAsync();
-            if (response == null || !response.Contains("200"))
+            try
             {
-                MessageBox.Show("Failed to connect to NNTP server.");
-                return;
+                string response = await _viewModel.ConnectToNNTPAsync(NntpServer, port, new Profile() { Email = email.Text, Password = password.Password });
+                if (response.Contains("281"))
+                {
+                    CommandView commandView = new CommandView();
+                    commandView.Show();
+                    this.Close();
+                }
             }
-            MessageBox.Show(response);
-
-
-
-            await writer.WriteLineAsync($"authinfo user {email.Text}");
-            response = await reader.ReadLineAsync();
-            if (response == null || !response.Contains("381"))
+            catch (Exception ex)
             {
-                MessageBox.Show("Username not accepted.");
-                return;
+                MessageBox.Show(ex.Message);
             }
-            MessageBox.Show(response);
-
-
-
-            await writer.WriteLineAsync($"authinfo pass {password.Password}");
-            response = await reader.ReadLineAsync();
-            if (response == null || !response.Contains("281"))
-            {
-                MessageBox.Show("Wrong password.\nAuthentication failed.");
-                return;
-            }
-            MessageBox.Show(response);
         }
 
         private void CBProfile_SelectionChanged(object sender, SelectionChangedEventArgs e)

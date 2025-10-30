@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2 d17.14
+VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_NNTP_Project", "WPF_NNTP_Project\WPF_NNTP_Project.csproj", "{93BA445B-C445-45C4-8B2F-0A99946D100E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NNTP_Test", "NNTP_Test\NNTP_Test.csproj", "{89237B02-C131-4141-A981-DE0AFDAF2CB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{93BA445B-C445-45C4-8B2F-0A99946D100E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93BA445B-C445-45C4-8B2F-0A99946D100E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93BA445B-C445-45C4-8B2F-0A99946D100E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89237B02-C131-4141-A981-DE0AFDAF2CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89237B02-C131-4141-A981-DE0AFDAF2CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89237B02-C131-4141-A981-DE0AFDAF2CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89237B02-C131-4141-A981-DE0AFDAF2CB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
